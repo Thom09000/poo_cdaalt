@@ -2,95 +2,123 @@
 
 namespace App\Entity;
 
-use DateTime;
+use App\Entity\Account;
+use App\Entity\Category;
 
 class Link
 {
     //Attributes
     private int $id;
-    private string $url;
-    private string $icon;
     private string $name;
-    private string $description;
-    private DateTime $created_at;
-    private string $account_id;
+    private string $url;
+    private ?string $icon;
+    private ?string $description;
+    private \DateTime $createdAt;
+    //relations manyToOne /ManyToMany
+    private ?Account $account;
+    private array $categories;
 
-
-    //Constructor (valeur obligatoire)
-    public function __construct(string $url, string $icon, string $name, string $description, DateTime $created_at, string $account_id)
+    //Constructeur (valeurs obligatoires)
+    public function __construct(
+        string $name,
+        string $url
+    )
     {
-        $this->url = $url;
-        $this->icon = $icon;  
         $this->name = $name;
-        $this->description = $description;
-        $this->created_at = $created_at;
-        $this->account_id = $account_id;
+        $this->url = $url;
+        $this->createdAt = new \DateTime();
+        $this->categories = [];
     }
-    
 
+    //Getters
     //Getters and Setters
     public function getId(): int
     {
         return $this->id;
     }
 
- 
-    public function getUrl(): string 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getUrl(): string
     {
         return $this->url;
     }
-    public function getIcon(): string
+
+    public function getIcon(): ?string
     {
         return $this->icon;
     }
-    public function getName(): string 
+
+    public function getCreatedAt(): \DateTime
     {
-        return $this->name;
-    }
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-    public function getCreatedAt(): DateTime
-    {
-        return $this->created_at;
-    }
-    public function getAccountId(): string 
-    {
-        return $this->account_id;
+        return $this->createdAt;
     }
 
-    /*--------------------------------------------------------*/
-    /*-------------------------------------------------------*/
-    public function setId(int $id): void
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+    
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+    
+    public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
     }
-    public function setUrl(string $url): void
-    {
-        $this->url = $url;
-    }
-    public function setIcon(string $icon): void
-    {
-        $this->icon = $icon;
-    }
-    public function setName(string $name): void
+
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
-    public function setDescription(string $description): void
+    
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+        return $this;
+    }
+    
+    public function setCreatedAt(\Datetime $createdAt): self 
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
-    }
-    public function setAccountId(string $account_id): void
-    {
-        $this->account_id = $account_id;
+        return $this;
     }
 
-
-    //toString
-    public function __toString(): string
+    public function setAccount(?Account $account): self
     {
-        return $this->name;
+        $this->account = $account;
+        return $this;
+    }
+
+    public function addCategory(Category $category): self 
+    {
+        $this->categories[] = $category;
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        unset($this->categories[array_search($category, $this->categories)]);
+        sort($this->categories);
+        return $this;
     }
 }

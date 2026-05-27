@@ -10,10 +10,20 @@ git clone https://github.com/fork.git...
 ### 3 installer les dépendances
 ```sh
 composer install
+composer require vlucas/phpdotenv
+composer require --dev symfony/var-dumper
 ```
 
-### 4 démarrer le serveur php
+### 4 editer le fichier .env :
+```env
+# avec vos valeurs
+DATABASE_HOST=localhost
+DATABASE_NAME=links
+DATABASE_USERNAME=
+DATABASE_PASSWORD=
+```
+
+### 5 démarrer le serveur php
 ```sh
 php -S 127.0.0.1:8000 -t public
 ```
-
